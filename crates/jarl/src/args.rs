@@ -30,7 +30,7 @@ pub struct Args {
 #[derive(Subcommand)]
 pub(crate) enum Command {
     /// Check a set of files or directories
-    Check(CheckCommand),
+    Check(Box<CheckCommand>),
 
     /// Start a language server
     Server(ServerCommand),
@@ -123,6 +123,13 @@ pub struct CheckCommand {
         help = "[DEPRECATED: use `[lint.assignment]` in jarl.toml] Assignment operator to use, can be either `<-` or `=`."
     )]
     pub assignment: Option<String>,
+    #[arg(
+        long,
+        value_name = "FILES",
+        value_delimiter = ',',
+        help = "List of file patterns to exclude from linting, separated by a comma (no spaces)."
+    )]
+    pub exclude: Vec<String>,
     #[arg(
         long,
         default_value = "false",
